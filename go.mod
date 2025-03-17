@@ -1,4 +1,4 @@
-module bresenham
+module go-bresenham
 
 go 1.24.1
 
