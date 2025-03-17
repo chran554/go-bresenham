@@ -8,20 +8,25 @@ It is generalized to its purpose as it takes a function as argument that handles
 
 [source, bash]
 ----
- go get github.com/chran554/go-bresenham@latest
+go get github.com/chran554/go-bresenham@latest
+----
+
+[source, go]
+----
+import "github.com/chran554/go-bresenham"
 ----
 
 == Usage
 
-To draw a line from point (p1x, p1y) to (p2x, p2y) simply call `Bresenham` function.
+To draw a line from point (p1x, p1y) to (p2x, p2y) simply call `bresenham.Bresenham` function.
 
-.Usage of `Bresenham` function.
+.Usage of `bresenham.Bresenham` function.
 [source, go]
 ----
 // This function is applied to every line coordinate that Bresenham line algorithm generates.
 drawPixelFn := func(x, y int) { myImage.Set(x, y, c) } // Put generated pixel on image
 
-Bresenham(p1x, p1y, p2x, p2y, drawPixelFn)
+bresenham.Bresenham(p1x, p1y, p2x, p2y, drawPixelFn)
 ----
 
 See also examples below.
@@ -51,7 +56,7 @@ p1 := image.Pt(0, 0)
 p2 := image.Pt(10, 5)
 fmt.Printf("Print plotted coordinates from %+v to %+v using bresenham algorithm.\n", p1, p2)
 
-Bresenham(p1.X, p1.Y, p2.X, p2.Y, printBresenhamPlotCoordinate)
+bresenham.Bresenham(p1.X, p1.Y, p2.X, p2.Y, printBresenhamPlotCoordinate)
 fmt.Println()
 ----
 
@@ -68,7 +73,7 @@ Print plotted coordinates from (0,0) to (10,5) using bresenham algorithm.
 ----
 func Line(p1 image.Point, p2 image.Point, c color.Color, img draw.Image) {
 	drawPixelFn := func(x, y int) { img.Set(x, y, c) }
-	Bresenham(p1.X, p1.Y, p2.X, p2.Y, drawPixelFn)
+	bresenham.Bresenham(p1.X, p1.Y, p2.X, p2.Y, drawPixelFn)
 }
 ----
 
@@ -83,7 +88,7 @@ saveBresenhamPlotCoordinate := func(x, y int) { lineCoordinates = append(lineCoo
 p1 := image.Pt(0, 0)
 p2 := image.Pt(10, 5)
 
-Bresenham(p1.X, p1.Y, p2.X, p2.Y, saveBresenhamPlotCoordinate)
+bresenham.Bresenham(p1.X, p1.Y, p2.X, p2.Y, saveBresenhamPlotCoordinate)
 
 fmt.Printf("Saved plotted coordinates from %+v to %+v using bresenham algorithm.\n%v\n", p1, p2, lineCoordinates)
 ----
