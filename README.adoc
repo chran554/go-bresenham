@@ -1,0 +1,97 @@
+= Bresenham line
+
+This is an all integer implementation of Bresenham line algorithm.
+
+It is generalized to its purpose as it takes a function as argument that handles each generated coordinate along the line. This makes it suitable for more purposes than just the obvious line drawing in images.
+
+== Usage
+
+To draw a line from point (p1x, p1y) to (p2x, p2y) simply call `Bresenham` function.
+
+.Usage of `Bresenham` function.
+[source, go]
+----
+// This function is applied to every line coordinate that Bresenham line algorithm generates.
+drawPixelFn := func(x, y int) { myImage.Set(x, y, c) } // Put generated pixel on image
+
+Bresenham(p1x, p1y, p2x, p2y, drawPixelFn)
+----
+
+See also examples below.
+
+== License
+
+https://creativecommons.org/publicdomain/zero/1.0/[CC0 - Creative Commons 0 (v1.0)]
+
+image::http://mirrors.creativecommons.org/presskit/buttons/80x15/png/cc-zero.png[CC0]
+
+It is not a requirement by the license, but if you do improve the code then any feedback or pull request is very appreciated. Sharing is caring.
+
+== Dependencies
+
+Nope. No exotic dependencies to mention.
+
+== Examples
+
+=== Print coordinates
+
+.Print all generated coordinates along the line to std out.
+[source, go]
+----
+printBresenhamPlotCoordinate := func(x, y int) { fmt.Printf("(%d,%d) ", x, y) }
+
+p1 := image.Pt(0, 0)
+p2 := image.Pt(10, 5)
+fmt.Printf("Print plotted coordinates from %+v to %+v using bresenham algorithm.\n", p1, p2)
+
+Bresenham(p1.X, p1.Y, p2.X, p2.Y, printBresenhamPlotCoordinate)
+fmt.Println()
+----
+
+.Output
+----
+Print plotted coordinates from (0,0) to (10,5) using bresenham algorithm.
+(0,0) (1,1) (2,1) (3,2) (4,2) (5,3) (6,3) (7,4) (8,4) (9,5) (10,5)
+----
+
+=== Draw line onto an image
+
+.Plot a line in an image
+[source, go]
+----
+func Line(p1 image.Point, p2 image.Point, c color.Color, img draw.Image) {
+	drawPixelFn := func(x, y int) { img.Set(x, y, c) }
+	Bresenham(p1.X, p1.Y, p2.X, p2.Y, drawPixelFn)
+}
+----
+
+=== Save coordinates in slice
+
+.Save line plot coordinates in a slice
+[source, go]
+----
+var lineCoordinates []image.Point
+saveBresenhamPlotCoordinate := func(x, y int) { lineCoordinates = append(lineCoordinates, image.Pt(x, y)) }
+
+p1 := image.Pt(0, 0)
+p2 := image.Pt(10, 5)
+
+Bresenham(p1.X, p1.Y, p2.X, p2.Y, saveBresenhamPlotCoordinate)
+
+fmt.Printf("Saved plotted coordinates from %+v to %+v using bresenham algorithm.\n%v\n", p1, p2, lineCoordinates)
+----
+
+.Output
+----
+Saved plotted coordinates from (0,0) to (10,5) using bresenham algorithm.
+[(0,0) (1,1) (2,1) (3,2) (4,2) (5,3) (6,3) (7,4) (8,4) (9,5) (10,5)]
+----
+
+== Source of information
+
+* https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm[Wiki - Bresenham's line algorithm]
+
+* https://www.geeksforgeeks.org/bresenhams-line-generation-algorithm/[Geeks for geeks - Bresenham's line generation algorithm]
+
+== License
+
