@@ -1,4 +1,4 @@
-module go-bresenham
+module github.com/chran554/go-bresenham
 
 go 1.24.1
 
