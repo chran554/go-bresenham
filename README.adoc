@@ -1,8 +1,15 @@
 = Bresenham line
 
-This is an all integer implementation of Bresenham line algorithm.
+This is an all integer go-implementation of Bresenham line algorithm.
 
 It is generalized to its purpose as it takes a function as argument that handles each generated coordinate along the line. This makes it suitable for more purposes than just the obvious line drawing in images.
+
+== Install
+
+[source, bash]
+----
+ go get github.com/chran554/go-bresenham@latest
+----
 
 == Usage
 
