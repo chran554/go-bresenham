@@ -9,22 +9,14 @@ type point struct{ x, y int }
 
 func pt(x, y int) point { return point{x: x, y: y} }
 
-// TestBresenhamOctant tests that the plot of a line between two points
-// in any of the 8 octants, produce the expected result.
-func TestBresenhamOctant(t *testing.T) {
+func TestBresenham(t *testing.T) {
 	testCases := []struct {
 		name           string
 		p1, p2         point
 		expectedPoints []point
 	}{
-		{"Octant 1", pt(0, 0), pt(10, 5), []point{{0, 0}, {1, 1}, {2, 1}, {3, 2}, {4, 2}, {5, 3}, {6, 3}, {7, 4}, {8, 4}, {9, 5}, {10, 5}}},
-		{"Octant 2", pt(0, 0), pt(5, 10), []point{{0, 0}, {1, 1}, {1, 2}, {2, 3}, {2, 4}, {3, 5}, {3, 6}, {4, 7}, {4, 8}, {5, 9}, {5, 10}}},
-		{"Octant 3", pt(0, 0), pt(-5, 10), []point{{0, 0}, {-1, 1}, {-1, 2}, {-2, 3}, {-2, 4}, {-3, 5}, {-3, 6}, {-4, 7}, {-4, 8}, {-5, 9}, {-5, 10}}},
-		{"Octant 4", pt(0, 0), pt(-10, 5), []point{{0, 0}, {-1, 1}, {-2, 1}, {-3, 2}, {-4, 2}, {-5, 3}, {-6, 3}, {-7, 4}, {-8, 4}, {-9, 5}, {-10, 5}}},
-		{"Octant 5", pt(0, 0), pt(-10, -5), []point{{0, 0}, {-1, -1}, {-2, -1}, {-3, -2}, {-4, -2}, {-5, -3}, {-6, -3}, {-7, -4}, {-8, -4}, {-9, -5}, {-10, -5}}},
-		{"Octant 6", pt(0, 0), pt(-5, -10), []point{{0, 0}, {-1, -1}, {-1, -2}, {-2, -3}, {-2, -4}, {-3, -5}, {-3, -6}, {-4, -7}, {-4, -8}, {-5, -9}, {-5, -10}}},
-		{"Octant 7", pt(0, 0), pt(5, -10), []point{{0, 0}, {1, -1}, {1, -2}, {2, -3}, {2, -4}, {3, -5}, {3, -6}, {4, -7}, {4, -8}, {5, -9}, {5, -10}}},
-		{"Octant 8", pt(0, 0), pt(10, -5), []point{{0, 0}, {1, -1}, {2, -1}, {3, -2}, {4, -2}, {5, -3}, {6, -3}, {7, -4}, {8, -4}, {9, -5}, {10, -5}}},
+		{"single point", pt(42, 43), pt(42, 43), []point{{42, 43}}},
+		{"test line 1", pt(3, 3), pt(15, 10), []point{{3, 3}, {4, 4}, {5, 4}, {6, 5}, {7, 5}, {8, 6}, {9, 6}, {10, 7}, {11, 8}, {12, 8}, {13, 9}, {14, 9}, {15, 10}}},
 	}
 
 	for _, testCase := range testCases {
@@ -38,6 +30,39 @@ func TestBresenhamOctant(t *testing.T) {
 			assert.Equal(t, testCase.p1, accumulatedPoints[0], "first plotted point is not equal to p1")
 			assert.Equal(t, testCase.p2, accumulatedPoints[len(accumulatedPoints)-1], "last plotted point is not equal to p2")
 			assert.Equal(t, testCase.expectedPoints, accumulatedPoints, "all plotted points in the line are not exactly as expected")
+		})
+	}
+}
+
+// TestBresenhamOctant tests that the plot of a line between two points
+// in any of the 8 octants, produce the expected result.
+func TestBresenhamOctant(t *testing.T) {
+	testCases := []struct {
+		name           string
+		p1, p2         point
+		expectedPoints []point
+	}{
+		{"Octant 1", pt(0, 0), pt(10, 5), []point{{0, 0}, {1, 0}, {2, 1}, {3, 1}, {4, 2}, {5, 2}, {6, 3}, {7, 3}, {8, 4}, {9, 4}, {10, 5}}},
+		{"Octant 2", pt(0, 0), pt(5, 10), []point{{0, 0}, {0, 1}, {1, 2}, {1, 3}, {2, 4}, {2, 5}, {3, 6}, {3, 7}, {4, 8}, {4, 9}, {5, 10}}},
+		{"Octant 3", pt(0, 0), pt(-5, 10), []point{{0, 0}, {0, 1}, {-1, 2}, {-1, 3}, {-2, 4}, {-2, 5}, {-3, 6}, {-3, 7}, {-4, 8}, {-4, 9}, {-5, 10}}},
+		{"Octant 4", pt(0, 0), pt(-10, 5), []point{{0, 0}, {-1, 0}, {-2, 1}, {-3, 1}, {-4, 2}, {-5, 2}, {-6, 3}, {-7, 3}, {-8, 4}, {-9, 4}, {-10, 5}}},
+		{"Octant 5", pt(0, 0), pt(-10, -5), []point{{0, 0}, {-1, 0}, {-2, -1}, {-3, -1}, {-4, -2}, {-5, -2}, {-6, -3}, {-7, -3}, {-8, -4}, {-9, -4}, {-10, -5}}},
+		{"Octant 6", pt(0, 0), pt(-5, -10), []point{{0, 0}, {0, -1}, {-1, -2}, {-1, -3}, {-2, -4}, {-2, -5}, {-3, -6}, {-3, -7}, {-4, -8}, {-4, -9}, {-5, -10}}},
+		{"Octant 7", pt(0, 0), pt(5, -10), []point{{0, 0}, {0, -1}, {1, -2}, {1, -3}, {2, -4}, {2, -5}, {3, -6}, {3, -7}, {4, -8}, {4, -9}, {5, -10}}},
+		{"Octant 8", pt(0, 0), pt(10, -5), []point{{0, 0}, {1, 0}, {2, -1}, {3, -1}, {4, -2}, {5, -2}, {6, -3}, {7, -3}, {8, -4}, {9, -4}, {10, -5}}},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			var accumulatedPoints []point
+
+			Bresenham(testCase.p1.x, testCase.p1.y, testCase.p2.x, testCase.p2.y, func(x, y int) {
+				accumulatedPoints = append(accumulatedPoints, pt(x, y))
+			})
+
+			assert.Equal(t, testCase.p1, accumulatedPoints[0], "first plotted point is not equal to p1")
+			assert.Equal(t, testCase.p2, accumulatedPoints[len(accumulatedPoints)-1], "last plotted point is not equal to p2")
+			assert.Equal(t, testCase.expectedPoints, accumulatedPoints, "all plotted points in the line are not exactly as expected", accumulatedPoints)
 		})
 	}
 }

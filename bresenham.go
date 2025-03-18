@@ -107,22 +107,23 @@ func bresenhamOctant8(p1x, p1y, p2x, p2y int, point func(x, y int)) {
 //
 // Source of information:
 // https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
-// https://www.geeksforgeeks.org/bresenhams-line-generation-algorithm/
 func bresenhamLine(p1x, p1y, p2x, p2y int, point func(x, y int), transform func(x, y int) (int, int)) {
-	mNew := 2 * (p2y - p1y)
-	slopeErrorNew := mNew - (p2x - p1x)
+	dx := p2x - p1x
+	dy := p2y - p1y
+
+	dx2 := dx * 2
+	dy2 := dy * 2
+
+	d := dy2 - dx
 
 	y := p1y
 	for x := p1x; x <= p2x; x++ {
 		point(transform(x, y))
 
-		// Add the slope to increment the angle formed
-		slopeErrorNew += mNew
-
-		// Slope error reached limit, time to increment y and update slope error.
-		if slopeErrorNew > 0 {
+		if d > 0 {
 			y++
-			slopeErrorNew -= 2 * (p2x - p1x)
+			d -= dx2
 		}
+		d += dy2
 	}
 }
